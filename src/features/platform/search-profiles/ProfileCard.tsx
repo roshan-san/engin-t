@@ -3,34 +3,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { MapPin, User2, Plus, Loader2, Github, Linkedin, Check } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
-import type { Profile } from '@/types/supa-types'
-import { sendConnectionMutation, useAllConnections } from '../hooks/ConnectionHooks'
-import type { MouseEvent } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { useAuth } from '@/features/authentication/contexts/useAuth'
+import { Profile } from '@/db/tables/profiles'
 
 export default function ProfileCard({ profile }: { profile: Profile }) {
-  const sendConnection = sendConnectionMutation()
-  const { data: user } = useAuth()
-  const { data: connections } = useAllConnections()
-
-  const isConnected = connections?.some(
-    connection => 
-      (connection.sender_id === user?.id && connection.receiver_id === profile.id) ||
-      (connection.sender_id === profile.id && connection.receiver_id === user?.id)
-  )
-
-  const handleConnectionClick = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    sendConnection.mutate(profile.id)
-  }
-
-  const handleSocialClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    e.stopPropagation()
-  }
-
+ 
   return (
     <Link to='/profile/$username' params={{ username: profile.username }}>
       <Card className="group transition-all duration-300 hover:scale-[1.01]">
@@ -49,38 +27,6 @@ export default function ProfileCard({ profile }: { profile: Profile }) {
                   <p className="text-xs text-muted-foreground">@{profile.username}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  {profile.id && user?.id !== profile.id && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-6 w-6"
-                            onClick={handleConnectionClick}
-                            disabled={sendConnection.isPending || isConnected}
-                          >
-                            {sendConnection.isPending ? (
-                              <Loader2 className="h-3 w-3 animate-spin" />
-                            ) : isConnected || sendConnection.isSuccess ? (
-                              <Check className="h-3 w-3 text-green-500" />
-                            ) : (
-                              <Plus className="h-3 w-3" />
-                            )}
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>
-                            {isConnected 
-                              ? "Already connected" 
-                              : sendConnection.isSuccess 
-                                ? "Connection request sent" 
-                                : "Send connection request"}
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
                   {profile.github_url && (
                     <TooltipProvider>
                       <Tooltip>
@@ -89,7 +35,6 @@ export default function ProfileCard({ profile }: { profile: Profile }) {
                             to={profile.github_url}
                             target="_blank"
                             className="text-muted-foreground hover:text-foreground"
-                            onClick={handleSocialClick}
                           >
                             <Github className="h-4 w-4" />
                           </Link>
@@ -108,7 +53,6 @@ export default function ProfileCard({ profile }: { profile: Profile }) {
                             to={profile.linkedin_url}
                             target="_blank"
                             className="text-muted-foreground hover:text-foreground"
-                            onClick={handleSocialClick}
                           >
                             <Linkedin className="h-4 w-4" />
                           </Link>

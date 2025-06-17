@@ -12,7 +12,6 @@ import {
 import { FaMoneyBillWave } from "react-icons/fa";
 import { startupFundingSchema } from "@/features/platform/create-startup/validations/startup";
 import { useStartupCreation } from "../context/StartupCreateContext";
-import { createStartupMutation } from "../../hooks/StartupHooks";
 import { StartupInsert } from "@/db/tables/startups";
 
 
@@ -25,7 +24,6 @@ export default function StartupFunding() {
       funding: startupCreationData.funding || 0,
     },
   });
-  const createStartup= createStartupMutation()
 
   const handleSubmit = async (data: Partial<StartupInsert>) => {
     const isValid = await form.trigger();
@@ -33,7 +31,7 @@ export default function StartupFunding() {
       nextStep({
         funding: data.funding,
       });
-     createStartup.mutate(startupCreationData)
+     console.log(startupCreationData)
     }
   };
 
@@ -81,10 +79,9 @@ export default function StartupFunding() {
         <Button 
           type="submit"
           onClick={form.handleSubmit(handleSubmit)}
-          disabled={createStartup.isPending}
           className="flex-1 h-12 text-lg font-medium transition-all hover:scale-[1.02]"
         >
-          {createStartup.isPending ? "Creating..." : "Create Startup"}
+          Create Startup
         </Button>
       </div>
     </div>

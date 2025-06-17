@@ -1,11 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import type { Profile } from "@/types/supa-types";
+import { Profile } from "@/db/tables/profiles";
 
-export function ProfileSkills({ profile }:{
-  profile: Profile;
-}) {
+export function SkillsInterests({ profile }:{profile: Profile;}) {
   return (
     <div className="space-y-6">
       <Card>

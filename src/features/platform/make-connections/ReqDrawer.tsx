@@ -2,11 +2,18 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, Drawer
 import { Button } from "@/components/ui/button"
 import { HiBell } from "react-icons/hi"
 import { Skeleton } from "@/components/ui/skeleton"
-import { usePendingConnections } from "@/features/platform/hooks/ConnectionHooks"
 import ProfileTube from "./ProfileTube"
 
 export default function ReqDrawer() {
-  const pendingConnections = usePendingConnections()
+  const pendingConnections = {
+    data: [
+      { id: "ddkjhd", sender_id: "user1" },
+      { id: "dkjhjd", sender_id: "user2" },
+      { id: "dljdkdj", sender_id: "user3" }
+    ],
+    isLoading: false,
+    error: null
+  }
 
   return (
     <Drawer>

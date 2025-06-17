@@ -1,5 +1,5 @@
+
 import { Input } from '@/components/ui/input';
-import StartupCard from './StartupCard';
 
 export default function SearchStartups() {
   return (

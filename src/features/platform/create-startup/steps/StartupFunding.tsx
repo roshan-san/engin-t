@@ -12,8 +12,8 @@ import {
 import { FaMoneyBillWave } from "react-icons/fa";
 import { startupFundingSchema } from "@/features/platform/create-startup/validations/startup";
 import { useStartupCreation } from "../context/StartupCreateContext";
-import type { StartupInsert } from "@/types/supa-types";
 import { createStartupMutation } from "../../hooks/StartupHooks";
+import { StartupInsert } from "@/db/tables/startups";
 
 
 
@@ -27,13 +27,13 @@ export default function StartupFunding() {
   });
   const createStartup= createStartupMutation()
 
-  const handleSubmit = async (data: StartupInsert) => {
+  const handleSubmit = async (data: Partial<StartupInsert>) => {
     const isValid = await form.trigger();
     if (isValid) {
       nextStep({
         funding: data.funding,
       });
-            createStartup.mutate(startupCreationData)
+     createStartup.mutate(startupCreationData)
     }
   };
 

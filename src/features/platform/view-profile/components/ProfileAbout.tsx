@@ -1,12 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import type { Profile } from "@/types/supa-types";
+import { Profile } from "@/db/tables/profiles";
 import { Github, Linkedin, ExternalLink } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-
-interface ProfileAboutProps {
-  profile: Profile;
-}
 
 interface SocialLink {
   icon: LucideIcon;
@@ -28,7 +24,7 @@ function SocialLinkButton({ icon: Icon, label, url }: SocialLink) {
   );
 }
 
-export function ProfileAbout({ profile }: ProfileAboutProps) {
+export function ProfileAbout({ profile }: {profile:Profile}) {
   const socialLinks: SocialLink[] = [
     { icon: Github, label: "GitHub", url: profile.github_url },
     { icon: Linkedin, label: "LinkedIn", url: profile.linkedin_url },

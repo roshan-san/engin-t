@@ -4,20 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Link } from "@tanstack/react-router";
-import type { Profile } from "@/types/supa-types";
+import { Profile } from "@/db/tables/profiles";
 
-interface ProfileHeaderProps {
-  profile: Profile;
-}
-
-export function ProfileHeader({ profile }: ProfileHeaderProps) {
+export function ProfileHeader({ profile }: {profile:Profile}) {
   return (
     <Card className="w-full flex border">
       <CardContent>
         <div className="flex items-center justify-around gap-6 ring">
           <Avatar className="w-24 h-24 shadow-lg">
             <AvatarImage src={profile.avatar_url} alt={profile.full_name} />
-            <AvatarFallback className="text-2xl">{profile.full_name?.charAt(0)}</AvatarFallback>
           </Avatar>
 
           <div className="flex-1 ring">

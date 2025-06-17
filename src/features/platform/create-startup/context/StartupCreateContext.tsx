@@ -1,4 +1,4 @@
-import type { StartupInsert } from "@/types/supa-types";
+import { StartupInsert } from "@/db/tables/startups";
 import { createContext, useContext, useState } from "react";
 
 

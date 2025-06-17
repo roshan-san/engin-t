@@ -12,16 +12,13 @@ import { FaInfoCircle } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 import { startupDescriptionSchema } from "@/features/platform/create-startup/validations/startup";
 import { useStartupCreation } from "../context/StartupCreateContext";
-import type { StartupInsert } from "@/types/supa-types";
+import { StartupInsert } from "@/db/tables/startups";
 
 
 export default function StartupDescription() {
   const { startupCreationData, nextStep, previousStep } = useStartupCreation();
   const form = useForm({
-    resolver: zodResolver(startupDescriptionSchema),
-    defaultValues: {
-      description: startupCreationData.description || "",
-    },
+    resolver: zodResolver(startupDescriptionSchema)
   });
 
   const handleSubmit = async (data: StartupInsert) => {

@@ -19,7 +19,7 @@ export default function Location() {
     resolver: zodResolver(locationSchema)
   });
 
-  const handleSubmit = async (data: ProfileInsert) => {
+  const handleSubmit = async (data: Partial<ProfileInsert>) => {
     const isValid = await form.trigger();
     if (isValid) {
       nextStep({

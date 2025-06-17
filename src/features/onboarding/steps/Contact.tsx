@@ -14,15 +14,11 @@ import { ProfileInsert } from "@/db/tables/profiles";
 export default function Contact() {
   const { nextStep, previousStep, onboardingData } = useOnboarding();
   const form = useForm({
-    resolver: zodResolver(contactSchema),
-    defaultValues: {
-      github_url: onboardingData.github_url || "",
-      linkedin_url: onboardingData.linkedin_url || "",
-    },
+    resolver: zodResolver(contactSchema)
   });
   const createProfile=createProfileMutation()
 
-  const handleSubmit = async (data: ProfileInsert) => {
+  const handleSubmit = async (data: Partial<ProfileInsert>) => {
     const isValid = await form.trigger();
     if (isValid) {
       nextStep({

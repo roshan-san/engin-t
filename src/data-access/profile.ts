@@ -12,6 +12,7 @@ export async function getProfileById(profileId: string) {
 export async function createProfile(data:ProfileInsert){
     await db.insert(profiles).values(data);
 }
+
 export async function checkUsernameExists(username: string): Promise<boolean> {
     const profile = await db.query.profiles.findFirst({
         where: eq(profiles.username, username)

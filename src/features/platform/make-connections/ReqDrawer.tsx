@@ -2,7 +2,6 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, Drawer
 import { Button } from "@/components/ui/button"
 import { HiBell } from "react-icons/hi"
 import { Skeleton } from "@/components/ui/skeleton"
-import ProfileTube from "./ProfileTube"
 
 export default function ReqDrawer() {
   const pendingConnections = {
@@ -54,11 +53,9 @@ export default function ReqDrawer() {
               {pendingConnections.data?.map((connection) => {
                 console.log(pendingConnections.data)
                 return (
-                <ProfileTube
-                  key={connection.id}
-                  connectionId={connection.id}
-                  profileId={connection.sender_id}
-                />
+                <div key={connection.id}>
+                  {connection.sender_id}
+                </div>
               )})}
             </div>
           )}

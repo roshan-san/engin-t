@@ -6,7 +6,7 @@ import {Form,FormControl,FormField,FormItem,FormMessage} from "@/components/ui/f
 import { FaUsers } from "react-icons/fa";
 import { startupTeamSchema } from "@/features/platform/create-startup/validations/startup";
 import { useStartupCreation } from "../context/StartupCreateContext";
-import type { StartupInsert } from "@/types/supa-types";
+import { StartupInsert } from "@/db/tables/startups";
 
 
 export default function StartupTeam() {
@@ -18,7 +18,7 @@ export default function StartupTeam() {
     },
   });
 
-  const handleSubmit = async (data: StartupInsert) => {
+  const handleSubmit = async (data: Partial<StartupInsert>) => {
     const isValid = await form.trigger();
     if (isValid) {
       nextStep({

@@ -6,18 +6,15 @@ import { Form,FormControl,FormField,FormItem,FormMessage,} from "@/components/ui
 import { FaBuilding } from "react-icons/fa";
 import { startupNameSchema} from "@/features/platform/create-startup/validations/startup";
 import { useStartupCreation } from "../context/StartupCreateContext";
-import type {StartupInsert } from "@/types/supa-types";
+import { StartupInsert } from "@/db/tables/startups";
 
 export default function StartupName() {
   const {nextStep, previousStep ,startupCreationData} = useStartupCreation();
   const form = useForm({
     resolver: zodResolver(startupNameSchema),
-    defaultValues: {
-      name: startupCreationData.name || "",
-    },
   });
 
-  const handleSubmit = async (data: StartupInsert) => {
+  const handleSubmit = async (data: Partial<StartupInsert>) => {
     const isValid = await form.trigger();
     if (isValid) {
       nextStep({

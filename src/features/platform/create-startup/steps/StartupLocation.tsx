@@ -12,7 +12,7 @@ import {
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { startupLocationSchema } from "@/features/platform/create-startup/validations/startup";
 import { useStartupCreation } from "../context/StartupCreateContext";
-import type { StartupInsert } from "@/types/supa-types";
+import { StartupInsert } from "@/db/tables/startups";
 
 export default function StartupLocation() {
   const { startupCreationData, nextStep, previousStep } = useStartupCreation();
@@ -23,7 +23,7 @@ export default function StartupLocation() {
     },
   });
 
-  const handleSubmit = async (data: StartupInsert) => {
+  const handleSubmit = async (data: Partial<StartupInsert>) => {
     const isValid = await form.trigger();
     if (isValid) {
       nextStep({

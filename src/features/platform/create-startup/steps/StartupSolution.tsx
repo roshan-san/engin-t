@@ -10,20 +10,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { FaLightbulb } from "react-icons/fa";
-import { startupSolutionSchema, type StartupSolutionFormValues } from "@/features/platform/create-startup/validations/startup";
 import { useStartupCreation } from "../context/StartupCreateContext";
+import { startupSolutionSchema } from "../validations/startup";
+import { StartupInsert } from "@/db/tables/startups";
 
 
 export default function StartupSolution() {
   const { startupCreationData, nextStep, previousStep } = useStartupCreation();
-  const form = useForm<StartupSolutionFormValues>({
+  const form = useForm({
     resolver: zodResolver(startupSolutionSchema),
-    defaultValues: {
-      solution: startupCreationData.solution || "",
-    },
   });
 
-  const handleSubmit = async (data: StartupSolutionFormValues) => {
+  const handleSubmit = async (data:Partial<StartupInsert> ) => {
     const isValid = await form.trigger();
     if (isValid) {
       nextStep({

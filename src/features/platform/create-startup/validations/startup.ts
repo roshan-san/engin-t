@@ -1,4 +1,4 @@
-import * as z from "zod";
+import z from "zod";
 
 export const startupNameSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -26,15 +26,4 @@ export const startupTeamSchema = z.object({
 
 export const startupFundingSchema = z.object({
   funding: z.coerce.number().min(0, "Funding amount cannot be negative"),
-});
-
-// Combined schema for all startup fields
-export const startupCreationSchema = z.object({
-  name: startupNameSchema.shape.name,
-  description: startupDescriptionSchema.shape.description,
-  location: startupLocationSchema.shape.location,
-  problem: startupProblemSchema.shape.problem,
-  solution: startupSolutionSchema.shape.solution,
-  team_size: startupTeamSchema.shape.team_size,
-  funding: startupFundingSchema.shape.funding,
 });

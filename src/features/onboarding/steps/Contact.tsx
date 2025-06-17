@@ -6,8 +6,8 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { contactSchema } from "../validations/onboarding";
 import { useOnboarding } from "../context/OnboardContext";
-import type { ProfileInsert } from "@/types/supa-types";
 import { createProfileMutation } from "@/features/platform/hooks/ProfileHooks";
+import { ProfileInsert } from "@/db/tables/profiles";
 
 
 
@@ -29,7 +29,6 @@ export default function Contact() {
         github_url: data.github_url,
         linkedin_url: data.linkedin_url,
       });
-      console.log(onboardingData)
       createProfile.mutate(onboardingData)
     }
   };

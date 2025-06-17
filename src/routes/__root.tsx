@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react'
 import { Outlet, createRootRoute, HeadContent, Scripts, } from '@tanstack/react-router'
 import { ReloadPrompt } from '../components/ReloadPrompt'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ThemeProvider } from '@/components/ThemeProvider'
 
 export const Route = createRootRoute({
     head: () => ({
@@ -24,9 +27,15 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
+    const queryClient = new QueryClient()
     return (
         <RootDocument>
-            <Outlet />
+            <ThemeProvider>
+                <QueryClientProvider client={queryClient}>
+                    <Outlet />
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
+            </ThemeProvider>
         </RootDocument>
     )
 }

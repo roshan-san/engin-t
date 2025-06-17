@@ -1,7 +1,8 @@
 import { Card } from '@/components/ui/card'
 import { Users, DollarSign, Calendar, Building2, MapPin, } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
-import type { Startup } from '@/types/supa-types'
+import type { Startup } from '@/db/tables/startups'
+
 export default function StartupCard({startup}:{startup:Startup}) {
   return (
     <Link key={startup.id} to={"/startups/$startupid" } params={{startupid:startup.id}}>
@@ -34,7 +35,7 @@ export default function StartupCard({startup}:{startup:Startup}) {
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Calendar className="w-4 h-4" />
-            <span>{new Date(startup.created_at).toLocaleDateString()}</span>
+            <span>{startup.created_at ? new Date(startup.created_at).toLocaleDateString() : 'N/A'}</span>
           </div>
         </div>
       </div>

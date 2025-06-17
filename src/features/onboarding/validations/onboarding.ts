@@ -1,5 +1,5 @@
+import { checkUsernameExists } from "@/data-access/profile";
 import { z } from "zod";
-import { checkUsernameApi } from "@/api/profile";
 
 export const usernameSchema = z.object({
     username: z.string()
@@ -8,7 +8,7 @@ export const usernameSchema = z.object({
       .regex(/^[a-zA-Z0-9_-]+$/, "Username can only contain letters, numbers, underscores, and hyphens")
       .refine(
         async (username) => {
-          const isTaken = await checkUsernameApi(username);
+          const isTaken = await checkUsernameExists(username);
           return !isTaken;
         },
         "This username is already taken"

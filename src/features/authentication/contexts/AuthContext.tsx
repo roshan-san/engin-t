@@ -4,7 +4,7 @@ import { createContext, useContext } from 'react'
 import { useAuth } from './useAuth'
 import { useProfile } from './useProfile'
 import type { User } from '@supabase/supabase-js'
-import type { Profile } from '@/types/supa-types'
+import { Profile } from '@/db/tables/profiles'
 
 type SessionContextType = {
   user: User

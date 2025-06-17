@@ -8,9 +8,9 @@ export const startups = pgTable("startups", {
   description: text("description").notNull(),
   problem: text("problem").notNull(),
   solution: text("solution").notNull(),
-  teamSize: integer("team_size"),
-  patent: text("patent"),
-  funding: integer("funding"),
+  team_size: integer("team_size"),
+  patent: text("patent").default("NA").notNull(),
+  funding: integer("funding").default(0).notNull(),
   founderId: uuid("founder_id").references(() => profiles.id).notNull(),
   created_at: timestamp("created_at").defaultNow(),
 }, (table) => [

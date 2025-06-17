@@ -11,15 +11,12 @@ import {
 } from "@/components/ui/form";
 import { locationSchema } from "../validations/onboarding";
 import { useOnboarding } from "../context/OnboardContext";
-import type { ProfileInsert } from "@/types/supa-types";
+import { ProfileInsert } from "@/db/tables/profiles";
 
 export default function Location() {
   const { nextStep, previousStep } = useOnboarding();
   const form = useForm({
-    resolver: zodResolver(locationSchema),
-    defaultValues: {
-      location: "",
-    },
+    resolver: zodResolver(locationSchema)
   });
 
   const handleSubmit = async (data: ProfileInsert) => {

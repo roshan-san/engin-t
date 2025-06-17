@@ -1,4 +1,4 @@
-import type { ProfileInsert } from "@/types/supa-types";
+import { ProfileInsert } from "@/db/tables/profiles";
 import { createContext, useContext, useState } from "react";
 type OnboardingContextType = {
   onboardingData: Partial<ProfileInsert>;

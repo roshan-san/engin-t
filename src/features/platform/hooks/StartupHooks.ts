@@ -1,5 +1,4 @@
-import { createStartupApi, getMyStartupsApi, } from "@/api/startups";
-import type { StartupInsert } from "@/types/supa-types";
+import { StartupInsert } from "@/db/tables/startups";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -12,7 +11,7 @@ export function createStartupMutation() {
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["my-startups"] });
             navigate({
-                to: "/_protected/startups/$startupid",
+                to: "/startups/$startupid",
                 params: { startupid: data.id }
             });
         },

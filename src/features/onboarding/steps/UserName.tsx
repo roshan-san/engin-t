@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form,FormControl,FormField,FormItem,FormMessage,} from "@/components/ui/form";
 import { FaUser } from "react-icons/fa";
-import type {ProfileInsert } from "@/types/supa-types";
 import { usernameSchema } from "../validations/onboarding";
 import { useOnboarding } from "../context/OnboardContext";
+import { ProfileInsert } from "@/db/tables/profiles";
 
 export default function UserName() {
   const {nextStep, previousStep, onboardingData} = useOnboarding();

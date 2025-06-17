@@ -1,14 +1,18 @@
-import { createFileRoute, useRouter } from '@tanstack/react-router'
+import Hero from '@/features/landing/Hero'
+import { createFileRoute } from '@tanstack/react-router'
+import Header from '@/features/landing/Header'
+
 export const Route = createFileRoute('/')({
-  component: Home,
+  component: RouteComponent,
 })
 
-function Home() {
+function RouteComponent() {
+
+  
   return (
-    <div className='flex items-center justify-center border-amber-300 border-2'>
-      <h1 className='text-4xl text-center border-blue-800 border-4'>
-        Hello roshan 
-      </h1>
-    </div>
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <Hero />
+      </div>
   )
 }

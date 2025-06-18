@@ -5,9 +5,14 @@ import { FaTools, FaPlus, FaTimes } from "react-icons/fa";
 import { useOnboarding } from "../context/OnboardContext";
 import { skillsSchema } from "../validations/onboarding";
 
+interface Skill {
+  id: string;
+  name: string;
+}
+
 export default function Skills() {
   const { nextStep, previousStep } = useOnboarding();
-  const [skills, setSkills] = useState<string[]>([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
   const [newSkill, setNewSkill] = useState('');
   
   const addSkill = () => {
@@ -15,21 +20,23 @@ export default function Skills() {
     if (!trimmedSkill) return;
     
     const result = skillsSchema.safeParse({ 
-      skills: [...skills, trimmedSkill]
+      skills: [...skills.map(s => s.name), trimmedSkill]
     });
 
     if (result.success) {
-      setSkills([...skills, trimmedSkill]);
+      setSkills([...skills, { id: crypto.randomUUID(), name: trimmedSkill }]);
       setNewSkill('');
     }
   };
 
-  const removeSkill = (index: number) => {
-    setSkills(skills.filter((_, i) => i !== index));
+  const removeSkill = (id: string) => {
+    setSkills(skills.filter(skill => skill.id !== id));
   };
 
   const handleSubmit = () => {
-    const result = skillsSchema.safeParse({ skills: skills.map(skill => skill.trim()) });
+    const result = skillsSchema.safeParse({ 
+      skills: skills.map(skill => skill.name.trim()) 
+    });
     if (result.success) {
       nextStep({
         skills: result.data.skills
@@ -72,14 +79,14 @@ export default function Skills() {
               {skills.length === 0 ? (
                 <p className="text-muted-foreground">No skills added yet. Add some to get started!</p>
               ) : (
-                skills.map((skill, index) => (
+                skills.map((skill) => (
                   <div
-                    key={index}
+                    key={skill.id}
                     className="bg-primary/10 text-primary px-5 py-2.5 rounded-full flex items-center gap-2 shadow-sm"
                   >
-                    {skill}
+                    {skill.name}
                     <button
-                      onClick={() => removeSkill(index)}
+                      onClick={() => removeSkill(skill.id)}
                       className="hover:text-destructive transition-colors"
                     >
                       <FaTimes className="h-4 w-4" />

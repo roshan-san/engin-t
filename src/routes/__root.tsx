@@ -30,12 +30,12 @@ function RootComponent() {
     const queryClient = new QueryClient()
     return (
         <RootDocument>
-            <ThemeProvider>
-                <QueryClientProvider client={queryClient}>
+            {/* <ThemeProvider> */}
+                {/* <QueryClientProvider client={queryClient}> */}
                     <Outlet />
                     <ReactQueryDevtools initialIsOpen={false} />
-                </QueryClientProvider>
-            </ThemeProvider>
+                {/* </QueryClientProvider> */}
+            {/* </ThemeProvider> */}
         </RootDocument>
     )
 }

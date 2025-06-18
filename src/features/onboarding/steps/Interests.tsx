@@ -5,9 +5,14 @@ import { FaPlus, FaTimes, FaHeart } from "react-icons/fa";
 import { useOnboarding } from "../context/OnboardContext";
 import { interestsSchema } from "../validations/onboarding";
 
+interface Interest {
+  id: string;
+  name: string;
+}
+
 export default function Interests() {
   const { nextStep, previousStep } = useOnboarding();
-  const [interests, setInterests] = useState<string[]>([]);
+  const [interests, setInterests] = useState<Interest[]>([]);
   const [newInterest, setNewInterest] = useState("");
   
   const addInterest = () => {
@@ -15,21 +20,23 @@ export default function Interests() {
     if (!trimmedInterest) return;
     
     const result = interestsSchema.safeParse({ 
-      interests: [...interests, trimmedInterest]
+      interests: [...interests.map(i => i.name), trimmedInterest]
     });
 
     if (result.success) {
-      setInterests([...interests, trimmedInterest]);
+      setInterests([...interests, { id: crypto.randomUUID(), name: trimmedInterest }]);
       setNewInterest('');
     }
   };
 
-  const removeInterest = (index: number) => {
-    setInterests(interests.filter((_, i) => i !== index));
+  const removeInterest = (id: string) => {
+    setInterests(interests.filter(interest => interest.id !== id));
   };
 
   const handleSubmit = () => {
-    const result = interestsSchema.safeParse({ interests: interests.map(interest => interest.trim()) });
+    const result = interestsSchema.safeParse({ 
+      interests: interests.map(interest => interest.name.trim()) 
+    });
     if (result.success) {
       nextStep({
         interests: result.data.interests
@@ -72,14 +79,14 @@ export default function Interests() {
               {interests.length === 0 ? (
                 <p className="text-muted-foreground">No interests added yet. Add some to get started!</p>
               ) : (
-                interests.map((interest, index) => (
+                interests.map((interest) => (
                   <div
-                    key={index}
+                    key={interest.id}
                     className="bg-primary/10 text-primary px-5 py-2.5 rounded-full flex items-center gap-2 shadow-sm"
                   >
-                    {interest}
+                    {interest.name}
                     <button
-                      onClick={() => removeInterest(index)}
+                      onClick={() => removeInterest(interest.id)}
                       className="hover:text-destructive transition-colors"
                     >
                       <FaTimes className="h-4 w-4" />

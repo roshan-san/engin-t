@@ -1,6 +1,5 @@
 import CreateBtn from '@/features/platform/create-startup/CreateBtn'
 import Header from '@/features/platform/Header'
-import { useMyStartups } from '@/features/platform/hooks/StartupHooks'
 import StartupCard from '@/features/platform/search-startups/StartupCard'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -22,7 +21,23 @@ function SkeletonCard() {
 }
 
 export default function RouteComponent() {
-  const myStartups = useMyStartups()
+  const myStartups = {
+    isLoading: false,
+    data: [
+      {
+        id: '1',
+        name: 'Mock Startup 1',
+        description: 'This is a mock startup for testing',
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: '2',
+        name: 'Mock Startup 2',
+        description: 'Another mock startup for testing',
+        createdAt: new Date().toISOString(),
+      }
+    ]
+  }
   return (
     <div className="h-full flex flex-col p-4 gap-12">
       <Header>Dashboard</Header>
@@ -40,7 +55,19 @@ export default function RouteComponent() {
             </div>
           ) : (
             myStartups.data?.map((startup) => (
-              <StartupCard key={startup.id} startup={startup} />
+              <StartupCard key={startup.id} startup={{
+                id: startup.id,
+                name: startup.name,
+                description: startup.description,
+                location: null,
+                problem: '',
+                solution: '',
+                team_size: null,
+                patent: '',
+                funding: 0,
+                created_at: new Date(startup.createdAt),
+                founderId: ''
+              }} />
             ))
           )}
         </div>

@@ -12,8 +12,8 @@ function RouteComponent() {
   const deploymentURL = process.env.VITE_CONVEX_URL!;
   const convex = new ConvexReactClient(deploymentURL);
   return (
-    <ConvexProvider client={convex}>
-      <AuthProvider>
+    // <ConvexProvider client={convex}>
+      // {/* <AuthProvider> */}
         <div className="flex h-screen sm:flex-row flex-col w-full">
           <div className="w-20 hidden md:block">
             <LeftBar />
@@ -25,8 +25,8 @@ function RouteComponent() {
             <BottomBar />
           </div>
         </div>
-      </AuthProvider>
-    </ConvexProvider>
+      // {/* </AuthProvider> */}
+    // </ConvexProvider>
   )
 }
   

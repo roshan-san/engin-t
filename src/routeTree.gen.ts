@@ -12,7 +12,10 @@ import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProtectedDashboardRouteImport } from './routes/_protected/dashboard'
+import { Route as ProtectedProfileUsernameRouteImport } from './routes/_protected/profile.$username'
 import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth.$'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -22,11 +25,26 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProtectedRoute = ProtectedRouteImport.update({
+  id: '/_protected',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProtectedDashboardRoute = ProtectedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedProfileUsernameRoute =
+  ProtectedProfileUsernameRouteImport.update({
+    id: '/profile/$username',
+    path: '/profile/$username',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -36,26 +54,40 @@ const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/dashboard': typeof ProtectedDashboardRoute
+  '/profile/$username': typeof ProtectedProfileUsernameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/dashboard': typeof ProtectedDashboardRoute
+  '/profile/$username': typeof ProtectedProfileUsernameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_protected': typeof ProtectedRouteWithChildren
   '/register': typeof RegisterRoute
+  '/_protected/dashboard': typeof ProtectedDashboardRoute
+  '/_protected/profile/$username': typeof ProtectedProfileUsernameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/register'
+  fullPaths: '/' | '/register' | '/dashboard' | '/profile/$username'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/register'
-  id: '__root__' | '/' | '/register'
+  to: '/' | '/register' | '/dashboard' | '/profile/$username'
+  id:
+    | '__root__'
+    | '/'
+    | '/_protected'
+    | '/register'
+    | '/_protected/dashboard'
+    | '/_protected/profile/$username'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProtectedRoute: typeof ProtectedRouteWithChildren
   RegisterRoute: typeof RegisterRoute
 }
 export interface FileServerRoutesByFullPath {
@@ -89,12 +121,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected': {
+      id: '/_protected'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ProtectedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_protected/dashboard': {
+      id: '/_protected/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof ProtectedDashboardRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/profile/$username': {
+      id: '/_protected/profile/$username'
+      path: '/profile/$username'
+      fullPath: '/profile/$username'
+      preLoaderRoute: typeof ProtectedProfileUsernameRouteImport
+      parentRoute: typeof ProtectedRoute
     }
   }
 }
@@ -110,8 +163,23 @@ declare module '@tanstack/react-start/server' {
   }
 }
 
+interface ProtectedRouteChildren {
+  ProtectedDashboardRoute: typeof ProtectedDashboardRoute
+  ProtectedProfileUsernameRoute: typeof ProtectedProfileUsernameRoute
+}
+
+const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedDashboardRoute: ProtectedDashboardRoute,
+  ProtectedProfileUsernameRoute: ProtectedProfileUsernameRoute,
+}
+
+const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
+  ProtectedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProtectedRoute: ProtectedRouteWithChildren,
   RegisterRoute: RegisterRoute,
 }
 export const routeTree = rootRouteImport

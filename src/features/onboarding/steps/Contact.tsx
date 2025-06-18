@@ -6,9 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { contactSchema } from "../validations/onboarding";
 import { useOnboarding } from "../context/OnboardContext";
-import { createProfileMutation } from "@/features/platform/hooks/ProfileHooks";
-import { ProfileInsert } from "@/db/tables/profiles";
-
+import { ProfileInsert } from "@/lib/db/tables/profiles";
 
 
 export default function Contact() {
@@ -16,7 +14,6 @@ export default function Contact() {
   const form = useForm({
     resolver: zodResolver(contactSchema)
   });
-  const createProfile=createProfileMutation()
 
   const handleSubmit = async (data: Partial<ProfileInsert>) => {
     const isValid = await form.trigger();
@@ -25,7 +22,7 @@ export default function Contact() {
         github_url: data.github_url,
         linkedin_url: data.linkedin_url,
       });
-      createProfile.mutate(onboardingData)
+      console.log(onboardingData)
     }
   };
 
@@ -97,7 +94,7 @@ export default function Contact() {
           onClick={form.handleSubmit(handleSubmit)}
           className="flex-1 h-12 text-lg font-medium transition-all hover:scale-[1.02]"
         >
-          {createProfile.isPending ? 'Saving...' : 'Finish'}
+          Finish
         </Button>
       </div>
     </div>

@@ -3,15 +3,17 @@ import tsConfigPaths from 'vite-tsconfig-paths'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import tailwindcss from '@tailwindcss/vite'
-
+import { reactStartCookies } from "better-auth/react-start"
 
 export default defineConfig({
   server: {
     port: 3000,
   },
-  plugins: [tsConfigPaths(), tailwindcss(),
-  tanstackStart(), VitePWA(
-    {
+  plugins: [
+    tsConfigPaths(), 
+    tailwindcss(),
+    tanstackStart(), 
+    VitePWA({
       registerType: 'autoUpdate',
       includeAssets: [
         'favicon.svg',
@@ -20,10 +22,7 @@ export default defineConfig({
         'favicon-96x96.png'
       ],
       manifest: false
-
-    }
-
-
-
-  )],
+    }),
+    reactStartCookies() as any
+  ],
 })

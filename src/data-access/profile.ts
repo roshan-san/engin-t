@@ -1,5 +1,5 @@
-import { db } from "@/db";
-import {ProfileInsert, profiles } from "@/db/tables/profiles";
+import { db } from "@/lib/db";
+import {ProfileInsert, profiles } from "@/lib/db/tables/profiles";
 import { eq } from "drizzle-orm";
 
 export async function getProfileById(profileId: string) {

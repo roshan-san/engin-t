@@ -1,7 +1,6 @@
 import { Laptop, Search, Users, MessageCircle,} from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { useMe } from "@/features/authentication/contexts/AuthContext";
 
 const navigationItems = [
   { href: "/dashboard", icon: Laptop, },
@@ -11,7 +10,6 @@ const navigationItems = [
 ];
 
 export function BottomBar() {
-  const {profile} = useMe();
 
   return (
     <div className="fixed bottom-0 left-0 right-0 h-16 bg-background border-t">

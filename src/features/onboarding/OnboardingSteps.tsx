@@ -7,7 +7,7 @@ import UserType from "./steps/UserType";
 import WorkType from "./steps/WorkType";
 import { useOnboarding } from "./context/OnboardContext";
 import { Progress } from "@/components/ui/progress";
-export default function OnboardingSteps() {
+export function OnboardingSteps() {
   const { step } = useOnboarding();
 
   return (

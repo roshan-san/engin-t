@@ -1,4 +1,4 @@
-import { ProfileInsert } from "@/db/tables/profiles";
+import { ProfileInsert } from "@/lib/db/tables/profiles";
 import { createContext, useContext, useState } from "react";
 type OnboardingContextType = {
   onboardingData: Partial<ProfileInsert>;

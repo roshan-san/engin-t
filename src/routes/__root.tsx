@@ -4,14 +4,13 @@ import { ReloadPrompt } from '../components/ReloadPrompt'
 import { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ThemeProvider } from '@/components/ThemeProvider'
-import { authQueries } from '@/services/queries'
 import { Toaster } from "src/components/ui/sonner"
+import { getUserSessionFN } from '@/services/auth.api'
 
 export const Route = createRootRouteWithContext<{queryClient: QueryClient }>()
     ({
-        beforeLoad: async ({ context }) => {
-            const userSession = await context.queryClient.fetchQuery(authQueries.user())
-
+        beforeLoad: async () => {
+            const userSession = await getUserSessionFN()
             return { userSession }
         },
         head: () => ({

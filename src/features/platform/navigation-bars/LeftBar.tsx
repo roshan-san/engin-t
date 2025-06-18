@@ -1,9 +1,8 @@
 import { Laptop, Search, Users, MessageCircle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import SignOutButton from "./SignOut";
-import { Link, useLoaderData } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { useMe } from "@/features/authentication/contexts/AuthContext";
 import { createServerFn } from "@tanstack/react-start";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
@@ -16,15 +15,15 @@ const mainNavigationItems = [
 
 const getProfileFN = createServerFn().handler(
   async () => {
-    
+    console.log("haha")
   }
 )
-
 export function LeftBar() {
   const profile = useSuspenseQuery({
     queryKey:["profile"],
     queryFn:getProfileFN
   })
+
   return (
     <div className="flex h-full flex-col items-center">
       <div className="flex flex-col items-center gap-8 flex-grow py-10">
@@ -53,7 +52,7 @@ export function LeftBar() {
       </div>
 
       <div className="flex flex-col items-center gap-6 pb-10">
-        <TooltipProvider>
+        {/* <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
                 <Link
@@ -69,7 +68,7 @@ export function LeftBar() {
               <p>{profile.full_name}</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
+        </TooltipProvider> */}
 
         <TooltipProvider>
           <Tooltip>

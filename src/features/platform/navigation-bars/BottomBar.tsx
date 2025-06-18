@@ -28,14 +28,14 @@ export function BottomBar() {
             <Icon className="h-5 w-5" />
           </Link>
         ))}
-          <Link
+          {/* <Link
             to={"/profile/$username"}
             params={{ username: profile.username }}
           >
             <Avatar>
               <AvatarImage src={profile.avatar_url} />
             </Avatar>
-          </Link>
+          </Link> */}
       </div>
     </div>
   )

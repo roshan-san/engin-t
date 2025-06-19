@@ -2,9 +2,19 @@ import { Moon, Sun } from "lucide-react"
 import { Switch } from "./ui/switch"
 import { Label } from "./ui/label"
 import { useTheme } from "./ThemeProvider"
+import { useEffect, useState } from "react"
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <div className="flex items-center space-x-2">

@@ -5,9 +5,6 @@ import { FullScreenLoader } from '@/components/FullScreenLoader'
 
 export const Route = createFileRoute('/register')({
   component: RouteComponent,
-  loader(ctx) {
-     
-  },
 })
 
 function RouteComponent() {

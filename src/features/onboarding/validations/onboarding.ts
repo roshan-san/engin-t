@@ -1,4 +1,4 @@
-import { checkUsernameExists } from "@/data-access/profile";
+import { checkUsernameExists } from "@/data-access/profile.server";
 import { z } from "zod";
 
 export const usernameSchema = z.object({

@@ -1,18 +1,14 @@
 import type { ReactNode } from 'react'
-import { Outlet, HeadContent, Scripts, createRootRouteWithContext, } from '@tanstack/react-router'
+import { Outlet, HeadContent, Scripts, createRootRouteWithContext, redirect, } from '@tanstack/react-router'
 import { ReloadPrompt } from '../components/ReloadPrompt'
 import { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { Toaster } from "src/components/ui/sonner"
-import { getUserSessionFN } from '@/services/auth.api'
+import "../styles/app.css"
 
-export const Route = createRootRouteWithContext<{queryClient: QueryClient }>()
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()
     ({
-        beforeLoad: async () => {
-            const userSession = await getUserSessionFN()
-            return { userSession }
-        },
         head: () => ({
             meta: [
                 { title: "Engin" },
@@ -27,7 +23,6 @@ export const Route = createRootRouteWithContext<{queryClient: QueryClient }>()
                 { rel: 'shortcut icon', href: '/favicon.ico' },
                 { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
                 { rel: 'manifest', href: '/site.webmanifest' },
-                { rel: "stylesheet", href: "/src/styles/app.css" }
             ],
         }),
         component: RootComponent,
@@ -36,11 +31,7 @@ export const Route = createRootRouteWithContext<{queryClient: QueryClient }>()
 function RootComponent() {
     return (
         <RootDocument>
-            <ThemeProvider>
-                <Outlet />
-                <ReactQueryDevtools initialIsOpen={false} />
-                <Toaster/>
-            </ThemeProvider>
+            <Outlet />
         </RootDocument>
     )
 }
@@ -52,7 +43,11 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
                 <HeadContent />
             </head>
             <body>
-                {children}
+                <ThemeProvider>
+                    {children}
+                    <ReactQueryDevtools initialIsOpen={false} />
+                    <Toaster />
+                </ThemeProvider>
                 <ReloadPrompt />
                 <Scripts />
             </body>

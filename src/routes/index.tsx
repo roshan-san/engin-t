@@ -1,5 +1,5 @@
 import Hero from '@/features/landing/Hero'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import Header from '@/features/landing/Header'
 
 export const Route = createFileRoute('/')({

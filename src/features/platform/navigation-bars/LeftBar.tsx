@@ -19,10 +19,6 @@ const getProfileFN = createServerFn().handler(
   }
 )
 export function LeftBar() {
-  const profile = useSuspenseQuery({
-    queryKey:["profile"],
-    queryFn:getProfileFN
-  })
 
   return (
     <div className="flex h-full flex-col items-center">

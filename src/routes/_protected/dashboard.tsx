@@ -3,25 +3,17 @@ import CreateBtn from '@/features/platform/create-startup/CreateBtn'
 import Header from '@/features/platform/Header'
 import StartupCard from '@/features/platform/search-startups/StartupCard'
 import { useMyStartups } from '@/features/platform/queries/startup.queries'
-import { getUserIdFn } from '@/features/authentication/auth.functions'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Suspense } from 'react'
 
 export const Route = createFileRoute('/_protected/dashboard')({
-  component: RouteComponent,
-  loader: async () => {
-    const userId = await getUserIdFn()
-    if (!userId) {
-        throw redirect({ to: "/" })
-      }
-    return { userId }
-  }
+  component: RouteComponent
+
   
 })
 
 export default function RouteComponent() {
-  const userId =useLoaderData({from:"/_protected/dashboard"}).userId
-  const myStartups = useMyStartups(userId)
+  const myStartups = useMyStartups()
 
   return (
     <div className="h-full flex flex-col p-4 gap-12">

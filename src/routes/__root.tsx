@@ -21,8 +21,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()
                 { rel: 'icon', type: 'image/png', href: '/favicon-96x96.png', sizes: '96x96' },
                 { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
                 { rel: 'shortcut icon', href: '/favicon.ico' },
-                { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
                 { rel: 'manifest', href: '/site.webmanifest' },
+                { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
             ],
         }),
         component: RootComponent,
@@ -31,7 +31,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()
 function RootComponent() {
     return (
         <RootDocument>
-            <Outlet />
+            <ThemeProvider>
+                <Outlet />
+                <ReactQueryDevtools initialIsOpen={false} />
+                <Toaster />
+            </ThemeProvider>
         </RootDocument>
     )
 }
@@ -43,11 +47,8 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
                 <HeadContent />
             </head>
             <body>
-                <ThemeProvider>
-                    {children}
-                    <ReactQueryDevtools initialIsOpen={false} />
-                    <Toaster />
-                </ThemeProvider>
+                {children}
+
                 <ReloadPrompt />
                 <Scripts />
             </body>

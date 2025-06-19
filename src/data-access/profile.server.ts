@@ -4,18 +4,19 @@ import { createServerFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
 import z from "zod";
 import { createInsertSchema } from "drizzle-zod";
+import { userRequiredMiddleware } from "@/features/authentication/auth.middleware";
 
 const profileInsertSchema = createInsertSchema(profiles);
 
-export const getMyProfileByIdFn = createServerFn()
-    .validator(z.object({
-        userId: z.string()
-    }))
+export const getMyProfileFn = createServerFn()
+    .middleware([userRequiredMiddleware])
     .handler(
-        async ({ data }) => {
-              return await db.select().from(profiles).where(eq(profiles.id, data.userId))
+        async ({context}) => {
+            const [profile] = await db.select().from(profiles).where(eq(profiles.id, context.userSession.user.id)).limit(1);
+            return profile;
         }
     )
+
 export const createProfileFn = createServerFn()
     .validator(profileInsertSchema)
     .handler(async ({ data }) => {
@@ -23,9 +24,13 @@ export const createProfileFn = createServerFn()
     })
 
     
-export async function checkUsernameExists(username: string): Promise<boolean> {
-    const profile = await db.query.profiles.findFirst({
-        where: eq(profiles.username, username)
-    });
-    return !!profile;
-}
+export const checkUsernameExistsFn = createServerFn()
+    .validator(z.object({username:z.string()}))
+    .handler(
+        async ({data,context}) => {
+            const profile = await db.query.profiles.findFirst({
+                where: eq(profiles.username, data.username)
+            });
+            return !!profile;
+        }
+    ) 

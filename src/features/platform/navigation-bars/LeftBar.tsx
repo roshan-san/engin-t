@@ -3,8 +3,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/compo
 import SignOutButton from "./SignOut";
 import { Link } from "@tanstack/react-router";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { createServerFn } from "@tanstack/react-start";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMyProfile } from "../queries/profile.queries";
 
 const mainNavigationItems = [
   { href: "/dashboard", icon: Laptop, label: "Dashboard" },
@@ -13,12 +12,8 @@ const mainNavigationItems = [
   { href: "/message", icon: MessageCircle, label: "Messages" },
 ];
 
-const getProfileFN = createServerFn().handler(
-  async () => {
-    console.log("haha")
-  }
-)
 export function LeftBar() {
+  const profile = useMyProfile()
 
   return (
     <div className="flex h-full flex-col items-center">
@@ -48,23 +43,23 @@ export function LeftBar() {
       </div>
 
       <div className="flex flex-col items-center gap-6 pb-10">
-        {/* <TooltipProvider>
+        <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
                 <Link
                   to={"/profile/$username"}
-                  params={{ username: profile.username }}
+                  params={{ username: profile.data.username }}
                 >
                   <Avatar>
-                    <AvatarImage src={profile.avatar_url} />
+                    <AvatarImage src={profile.data.avatar_url} />
                   </Avatar>
                 </Link>
             </TooltipTrigger>
             <TooltipContent side="right" className="font-medium">
-              <p>{profile.full_name}</p>
+              <p>{profile.data.full_name}</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider> */}
+        </TooltipProvider>
 
         <TooltipProvider>
           <Tooltip>

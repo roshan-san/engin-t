@@ -8,8 +8,6 @@ import { Suspense } from 'react'
 
 export const Route = createFileRoute('/_protected/dashboard')({
   component: RouteComponent
-
-  
 })
 
 export default function RouteComponent() {

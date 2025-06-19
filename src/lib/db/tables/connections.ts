@@ -3,8 +3,8 @@ import { profiles } from "./profiles";
 
 export const connections = pgTable("connections", {
   id: uuid("id").defaultRandom().primaryKey(),
-  senderId: uuid("sender_id").notNull().references(() => profiles.id),
-  receiverId: uuid("receiver_id").notNull().references(() => profiles.id),
+  senderId: text("sender_id").notNull().references(() => profiles.id),
+  receiverId: text("receiver_id").notNull().references(() => profiles.id),
   status: text("status", { enum: ["pending", "accepted","rejected"] }).notNull().default("pending"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

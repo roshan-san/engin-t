@@ -11,7 +11,7 @@ export const startups = pgTable("startups", {
   team_size: integer("team_size"),
   patent: text("patent").default("NA").notNull(),
   funding: integer("funding").default(0).notNull(),
-  founderId: uuid("founder_id").references(() => profiles.id).notNull(),
+  founderId: text("founder_id").references(() => profiles.id).notNull(),
   created_at: timestamp("created_at").defaultNow(),
 }, (table) => [
   index("startups_id_idx").on(table.id),

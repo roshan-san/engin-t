@@ -3,10 +3,9 @@ import {profiles } from "@/lib/db/schema";
 import { createServerFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
 import z from "zod";
-import { createInsertSchema } from "drizzle-zod";
 import { userRequiredMiddleware } from "@/features/authentication/auth.middleware";
+import { OnboardingDataSchema } from "./profile.schema";
 
-const profileInsertSchema = createInsertSchema(profiles);
 export const getMyProfileFn = createServerFn()
     .middleware([userRequiredMiddleware])
     .handler(
@@ -17,9 +16,10 @@ export const getMyProfileFn = createServerFn()
     )
 
 export const createProfileFn = createServerFn()
-    .validator(profileInsertSchema)
-    .handler(async ({ data }) => {
-        await db.insert(profiles).values(data);
+    .middleware([userRequiredMiddleware])
+    .validator(OnboardingDataSchema)
+    .handler(async ({ data ,context}) => {
+        console.log("server function")
     })
     
 export const checkUsernameExistsFn = createServerFn()
@@ -32,3 +32,13 @@ export const checkUsernameExistsFn = createServerFn()
             return !!profile;
         }
     ) 
+
+export const logFn = createServerFn()
+    .middleware([userRequiredMiddleware])
+    .handler(
+        async ({context}) => {
+            const profile=await db.select().from(profiles).limit(1)
+            console.log(context.userSession.user)
+            console.log(profile)
+        }
+    )

@@ -1,15 +1,6 @@
+import { OnboardingDataType } from "@/data-access/profile.schema";
+import { createProfileFn, logFn } from "@/data-access/profile.server";
 import { createContext, useContext, useState } from "react";
-
-export type OnboardingDataType= {
-  username: string | undefined,
-  location: string | undefined,
-  github_url: string | undefined,
-  linkedin_url: string | undefined,
-  skills: string[] | undefined,
-  interests: string[] | undefined,
-  user_type: string | undefined,
-  work_type: string | undefined,
-}
 
 type OnboardingContextType = {
   onboardingData:OnboardingDataType;
@@ -43,7 +34,10 @@ export const OnboardingProvider = ({
   const nextStep = (data?: Partial<OnboardingDataType>) => {
     if (data) {
       updateData(data);
-      console.log(onboardingData)
+      if(step ==7 ){
+        console.log("final step") 
+        logFn()
+      }
     }
 
     setStep(Math.min(7, step + 1));

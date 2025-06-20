@@ -44,13 +44,5 @@ export const contactSchema = z.object({
   linkedin_url: z.string().url("Please enter a valid LinkedIn URL.").optional().or(z.literal(''))
 });
 
-export const OnboardingSchema = z.object({
-  username: usernameSchema.shape.username,
-  user_type: userTypeSchema.shape.user_type,
-  work_type: workTypeSchema.shape.work_type,
-  location: locationSchema.shape.location,
-  skills: skillsSchema.shape.skills,
-  interests: interestsSchema.shape.interests,
-  github_url: contactSchema.shape.github_url,
-  linkedin_url: contactSchema.shape.linkedin_url
-});
+
+

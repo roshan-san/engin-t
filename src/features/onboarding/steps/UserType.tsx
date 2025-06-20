@@ -27,7 +27,7 @@ const roles = [
 ];
 
 export default function UserType() {
-  const { nextStep, previousStep } = useOnboarding();
+  const { nextStep, previousStep, onboardingData } = useOnboarding();
   const [selectedUserType, setSelectedUserType] = useState('');
 
   const handleSubmit = (value: string) => {
@@ -35,6 +35,7 @@ export default function UserType() {
     if (result.success) {
       setSelectedUserType(value);
       nextStep({
+        ...onboardingData,
         user_type: value,
       });
     }

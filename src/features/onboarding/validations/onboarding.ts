@@ -1,4 +1,3 @@
-import { checkUsernameExists } from "@/data-access/profile.server";
 import { z } from "zod";
 
 export const usernameSchema = z.object({
@@ -6,13 +5,13 @@ export const usernameSchema = z.object({
       .min(3, "Username must be at least 3 characters")
       .max(30, "Username must be less than 30 characters")
       .regex(/^[a-zA-Z0-9_-]+$/, "Username can only contain letters, numbers, underscores, and hyphens")
-      .refine(
-        async (username) => {
-          const isTaken = await checkUsernameExists(username);
-          return !isTaken;
-        },
-        "This username is already taken"
-      )
+      // .refine(
+      //   async (username) => {
+      //     const isTaken = await checkUsernameExists(username);
+      //     return !isTaken;
+      //   },
+      //   "This username is already taken"
+      // )
 });
 
 export const userTypeSchema = z.object({
@@ -41,8 +40,8 @@ export const interestsSchema = z.object({
 });
 
 export const contactSchema = z.object({
-  github_url: z.string().optional(),
-  linkedin_url: z.string().optional()
+  github_url: z.string().url("Please enter a valid GitHub URL.").optional().or(z.literal('')),
+  linkedin_url: z.string().url("Please enter a valid LinkedIn URL.").optional().or(z.literal(''))
 });
 
 export const OnboardingSchema = z.object({

@@ -11,7 +11,7 @@ interface Skill {
 }
 
 export default function Skills() {
-  const { nextStep, previousStep } = useOnboarding();
+  const { nextStep, previousStep , onboardingData} = useOnboarding();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [newSkill, setNewSkill] = useState('');
   
@@ -39,6 +39,7 @@ export default function Skills() {
     });
     if (result.success) {
       nextStep({
+        ...onboardingData,
         skills: result.data.skills
       });
     }

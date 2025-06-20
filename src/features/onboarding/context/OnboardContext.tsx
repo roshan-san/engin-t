@@ -1,9 +1,20 @@
-import { ProfileInsert } from "@/lib/db/tables/profiles";
 import { createContext, useContext, useState } from "react";
+
+export type OnboardingDataType= {
+  username: string | undefined,
+  location: string | undefined,
+  github_url: string | undefined,
+  linkedin_url: string | undefined,
+  skills: string[] | undefined,
+  interests: string[] | undefined,
+  user_type: string | undefined,
+  work_type: string | undefined,
+}
+
 type OnboardingContextType = {
-  onboardingData: Partial<ProfileInsert>;
+  onboardingData:OnboardingDataType;
   step: number;
-  nextStep: (data?: Partial<ProfileInsert>) => void;
+  nextStep: (data?:OnboardingDataType) => void;
   previousStep: () => void;
 };
 
@@ -14,17 +25,27 @@ export const OnboardingProvider = ({
 }: { 
   children: React.ReactNode;
 }) => {
-  const [onboardingData, setOnboardingData] = useState<Partial<ProfileInsert>>({});
+  const [onboardingData, setOnboardingData] = useState<OnboardingDataType>({
+    username: undefined,
+    location: undefined,
+    github_url: undefined,
+    linkedin_url: undefined,
+    skills: undefined,
+    interests: undefined,
+    user_type: undefined,
+    work_type: undefined,
+  });
   const [step, setStep] = useState(1);
 
-  const updateData = (newData: Partial<ProfileInsert>) =>
+  const updateData = (newData: Partial<OnboardingDataType>) =>
     setOnboardingData((prev) => ({ ...prev, ...newData }));
 
-  const nextStep = (data?: Partial<ProfileInsert>) => {
+  const nextStep = (data?: Partial<OnboardingDataType>) => {
     if (data) {
       updateData(data);
       console.log(onboardingData)
     }
+
     setStep(Math.min(7, step + 1));
   };
 

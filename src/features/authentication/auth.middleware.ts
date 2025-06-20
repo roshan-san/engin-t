@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth"
+import { auth } from "@/lib/auth/auth"
 import { createMiddleware, createServerFn, json } from "@tanstack/react-start"
 import { getWebRequest } from "@tanstack/react-start/server"
 

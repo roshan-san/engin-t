@@ -26,7 +26,7 @@ const workTypes = [
   ];    
 
 export default function WorkType() {
-    const { nextStep, previousStep } = useOnboarding();
+    const { nextStep, previousStep , onboardingData} = useOnboarding();
     const [selectedWorkType, setSelectedWorkType] = useState("");
 
     const handleSubmit = (value: string) => {
@@ -34,6 +34,7 @@ export default function WorkType() {
       if (result.success) {
         setSelectedWorkType(value);
         nextStep({
+          ...onboardingData,
           work_type: value,
         });
       }

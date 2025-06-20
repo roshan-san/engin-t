@@ -7,7 +7,6 @@ import { createInsertSchema } from "drizzle-zod";
 import { userRequiredMiddleware } from "@/features/authentication/auth.middleware";
 
 const profileInsertSchema = createInsertSchema(profiles);
-
 export const getMyProfileFn = createServerFn()
     .middleware([userRequiredMiddleware])
     .handler(
@@ -22,7 +21,6 @@ export const createProfileFn = createServerFn()
     .handler(async ({ data }) => {
         await db.insert(profiles).values(data);
     })
-
     
 export const checkUsernameExistsFn = createServerFn()
     .validator(z.object({username:z.string()}))

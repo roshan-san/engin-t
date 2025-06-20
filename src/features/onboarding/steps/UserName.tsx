@@ -1,27 +1,48 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form,FormControl,FormField,FormItem,FormMessage,} from "@/components/ui/form";
 import { FaUser } from "react-icons/fa";
-import { usernameSchema } from "../validations/onboarding";
 import { useOnboarding } from "../context/OnboardContext";
-import { ProfileInsert } from "@/db/tables/profiles";
+import { usernameSchema } from "../validations/onboarding";
+import { z } from "zod";
 
 export default function UserName() {
-  const {nextStep, previousStep, onboardingData} = useOnboarding();
-  
-  const form = useForm({
-    resolver: zodResolver(usernameSchema),
-    defaultValues: {
-      username: onboardingData.username || "",
-    }
-  });
+  const { nextStep, previousStep, onboardingData } = useOnboarding();
+  const [username, setUsername] = useState(onboardingData.username || "");
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (data: ProfileInsert) => {
-    nextStep({
-      username: data.username,
-    });
+  const validate = (value: string) => {
+    try {
+      usernameSchema.parse({ username: value });
+      setError(null);
+      return true;
+    } catch (e) {
+      if (e instanceof z.ZodError) {
+        setError(e.errors[0]?.message || "Invalid username");
+      } else {
+        setError("Invalid username");
+      }
+      return false;
+    }
+  };
+
+  const handleNext = () => {
+    if (validate(username)) {
+      nextStep({
+        ...onboardingData,
+        username: username,
+      });
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleNext();
+    }
+  };
+
+  const handleBlur = () => {
+    validate(username);
   };
 
   return (
@@ -31,42 +52,33 @@ export default function UserName() {
           <FaUser className="text-primary w-5 h-5" />
           Choose your username
         </h3>
-        
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input 
-                      placeholder="Enter your username" 
-                      {...field}
-                      className="h-14 text-lg rounded-xl"
-                      autoFocus
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
+        <Input
+          placeholder="Enter your username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onBlur={handleBlur}
+          className="h-14 text-lg rounded-xl"
+          autoFocus
+        />
+        {error && (
+          <div className="text-destructive text-sm mt-1">{error}</div>
+        )}
       </div>
 
       <div className="w-full p-4 flex justify-between gap-4 mt-4">
-        <Button 
-          type="button" 
-          variant="outline" 
+        <Button
+          type="button"
+          variant="outline"
           onClick={previousStep}
           className="flex-1 h-12 text-lg font-medium hover:bg-muted/50 transition-colors"
         >
           Previous
         </Button>
-        <Button 
-          type="submit"
-          onClick={form.handleSubmit(handleSubmit)}
+        <Button
+          type="button"
+          onClick={handleNext}
+          disabled={!!error || username.trim().length === 0}
           className="flex-1 h-12 text-lg font-medium transition-all hover:scale-[1.02]"
         >
           Next

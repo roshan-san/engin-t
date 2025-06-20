@@ -1,31 +1,47 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
 import { locationSchema } from "../validations/onboarding";
 import { useOnboarding } from "../context/OnboardContext";
-import { ProfileInsert } from "@/db/tables/profiles";
+import { z } from "zod";
 
 export default function Location() {
-  const { nextStep, previousStep } = useOnboarding();
-  const form = useForm({
-    resolver: zodResolver(locationSchema)
-  });
+  const { nextStep, previousStep, onboardingData } = useOnboarding();
+  const [location, setLocation] = useState(onboardingData?.location || "");
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (data: Partial<ProfileInsert>) => {
-    const isValid = await form.trigger();
-    if (isValid) {
-      nextStep({
-        location: data.location,
-      });
+  const validate = (value: string) => {
+    try {
+      locationSchema.parse({ location: value });
+      setError(null);
+      return true;
+    } catch (e) {
+      if (e instanceof z.ZodError) {
+        setError(e.errors[0]?.message || "Invalid location");
+      } else {
+        setError("Invalid location");
+      }
+      return false;
     }
+  };
+
+  const handleNext = () => {
+    if (validate(location)) {
+      nextStep({
+        ...onboardingData,
+        location
+       });
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleNext();
+    }
+  };
+
+  const handleBlur = () => {
+    validate(location);
   };
 
   return (
@@ -34,42 +50,32 @@ export default function Location() {
         <h3 className="text-xl font-semibold text-foreground tracking-wide uppercase">
           Where are you located?
         </h3>
-        
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input 
-                      placeholder="Enter your location" 
-                      {...field}
-                      className="h-14 text-lg rounded-xl"
-                      autoFocus
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
+        <Input
+          placeholder="Enter your location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onBlur={handleBlur}
+          className="h-14 text-lg rounded-xl"
+          autoFocus
+        />
+        {error && (
+          <div className="text-destructive text-sm mt-1">{error}</div>
+        )}
       </div>
-
       <div className="w-full p-4 flex justify-between gap-4 mt-4">
-        <Button 
-          type="button" 
-          variant="outline" 
+        <Button
+          type="button"
+          variant="outline"
           onClick={previousStep}
           className="flex-1 h-12 text-lg font-medium hover:bg-muted/50 transition-colors"
         >
           Previous
         </Button>
-        <Button 
-          type="submit"
-          onClick={form.handleSubmit(handleSubmit)}
+        <Button
+          type="button"
+          onClick={handleNext}
+          disabled={!!error || location.trim().length === 0}
           className="flex-1 h-12 text-lg font-medium transition-all hover:scale-[1.02]"
         >
           Next

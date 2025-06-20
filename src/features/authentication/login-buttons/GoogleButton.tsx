@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { signIn } from "@/lib/auth-client"
+import { signIn } from "@/lib/auth/auth-client"
 import { FcGoogle } from "react-icons/fc"
 export function GoogleButton() {  
     return (

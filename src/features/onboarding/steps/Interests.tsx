@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FaPlus, FaTimes, FaHeart } from "react-icons/fa";
+import { FaTools, FaPlus, FaTimes } from "react-icons/fa";
 import { useOnboarding } from "../context/OnboardContext";
 import { interestsSchema } from "../validations/onboarding";
 
@@ -11,9 +11,9 @@ interface Interest {
 }
 
 export default function Interests() {
-  const { nextStep, previousStep } = useOnboarding();
+  const { nextStep, previousStep , onboardingData} = useOnboarding();
   const [interests, setInterests] = useState<Interest[]>([]);
-  const [newInterest, setNewInterest] = useState("");
+  const [newInterest, setNewInterest] = useState('');
   
   const addInterest = () => {
     const trimmedInterest = newInterest.trim();
@@ -39,6 +39,7 @@ export default function Interests() {
     });
     if (result.success) {
       nextStep({
+        ...onboardingData,
         interests: result.data.interests
       });
     }
@@ -50,12 +51,12 @@ export default function Interests() {
         <div className="space-y-8">
           <div className="space-y-6">
             <h3 className="text-xl font-semibold text-foreground tracking-wide uppercase flex items-center gap-3">
-              <FaHeart className="text-primary w-5 h-5" />
+              <FaTools className="text-primary w-5 h-5" />
               Add Your Interests
             </h3>
             <div className="flex gap-3">
               <Input 
-                placeholder="Add a interest" 
+                placeholder="Add an interest" 
                 value={newInterest}
                 onChange={(e) => setNewInterest(e.target.value)}
                 onKeyDown={(e) => {

@@ -1,4 +1,4 @@
-import { Laptop, Search, Users, MessageCircle } from "lucide-react";
+import { Laptop, Search, Users, MessageCircle, Loader2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import SignOutButton from "./SignOut";
 import { Link } from "@tanstack/react-router";
@@ -46,6 +46,11 @@ export function LeftBar() {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
+              {profile.isLoading ? (
+                <div className="flex items-center justify-center w-10 h-10">
+                  <Loader2 className="h-7 w-7 animate-spin text-muted-foreground" />
+                </div>
+              ) : profile.data ? (
                 <Link
                   to={"/profile/$username"}
                   params={{ username: profile.data.username }}
@@ -54,9 +59,12 @@ export function LeftBar() {
                     <AvatarImage src={profile.data.avatar_url} />
                   </Avatar>
                 </Link>
+              ) : (
+                <div className="flex items-center justify-center w-10 h-10 bg-muted rounded-full" />
+              )}
             </TooltipTrigger>
             <TooltipContent side="right" className="font-medium">
-              <p>{profile.data.full_name}</p>
+              <p>{profile.data ? profile.data.full_name : "Profile"}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

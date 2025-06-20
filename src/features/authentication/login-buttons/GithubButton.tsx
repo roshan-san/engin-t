@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { FaGithub } from "react-icons/fa"
 import { Loader2 } from "lucide-react"
-import { signIn } from "@/lib/auth-client"
+import { signIn } from "@/lib/auth/auth-client"
 
 export function GithubButton() {
 

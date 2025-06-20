@@ -1,7 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProfileHeader } from "@/features/platform/view-profile/components/ProfileHeader";
 import { ProfileAbout } from "@/features/platform/view-profile/components/ProfileAbout";
-import { Profile } from "@/db/tables/profiles";
 import { SkillsInterests } from "./components/SkillsInterests";
 
 export default function PublicProfileView({ profile }: { profile: Profile }) {
